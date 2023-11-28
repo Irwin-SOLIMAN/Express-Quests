@@ -95,7 +95,7 @@ if (firstname && lastname && email && city && language) {
 
   const deleteUser = (req, res) => {
     const id = parseInt(req.params.id);
-  
+    if(id) {
     database
       .query("delete from users where id = ?", [id])
       .then(([result]) => {
@@ -105,10 +105,15 @@ if (firstname && lastname && email && city && language) {
           res.sendStatus(204);
         }
       })
+    }
+    else {
+      database      
       .catch((err) => {
         console.error(err);
-        res.sendStatus(500);
+        res.sendStatus(404);
       });
+    }
+
   };
   
   

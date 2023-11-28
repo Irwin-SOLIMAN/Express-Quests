@@ -96,6 +96,7 @@ const updateMovie = (req, res) => {
 const deleteMovie = (req, res) => {
   const id = parseInt(req.params.id);
 
+if(id) {
   database
     .query("delete from movies where id = ?", [id])
     .then(([result]) => {
@@ -105,11 +106,15 @@ const deleteMovie = (req, res) => {
         res.sendStatus(204);
       }
     })
+  } else {
+    database
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.sendStatus(404);
     });
-};
+  } 
+}
+
 
 
 
