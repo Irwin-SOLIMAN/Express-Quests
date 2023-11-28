@@ -58,7 +58,7 @@ if (firstname && lastname && email && city && language) {
   database
   .catch((err) => {
     console.error(err);
-    res.sendStatus(500);
+    res.sendStatus(422);
   });
 }
   };
@@ -88,7 +88,7 @@ if (firstname && lastname && email && city && language) {
     database
       .catch((err) => {
         console.error(err);
-        res.sendStatus(500);
+        res.sendStatus(422);
       });}
   };
   

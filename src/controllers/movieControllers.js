@@ -59,7 +59,7 @@ const postMovie = (req, res) => {
     database
     .catch((err) => {
       console.error(err);
-      res.status(500).send("Internal Error");
+      res.status(422).send("Client Error");
     });
   }
 
@@ -88,7 +88,7 @@ const updateMovie = (req, res) => {
   
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.sendStatus(422);
     });
   }
 };
