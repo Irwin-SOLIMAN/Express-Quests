@@ -34,18 +34,33 @@ const getUsers = (req, res) => {
   const postUser = (req, res) => {
     const {firstname, lastname, email, city, language } = req.body;
   
-    database
-      .query(
-        "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
-        [firstname, lastname, email, city, language]
-      )
-      .then(([result]) => {
-        res.status(201).send({ id: result.insertId });
-      })
-      .catch((err) => {
-        console.error(err);
-        res.sendStatus(500);
-      });
+
+if (firstname && lastname && email && city && language) {
+  database
+  .query(
+    "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
+    [firstname, lastname, email, city, language]
+  )
+  .then(([result]) => {
+
+    const  newUser = {
+      id: result.insertId,
+      firstname,
+      lastname,
+      email,
+      city,
+      language
+    }
+
+    res.status(201).send(newUser);
+  })
+} else {
+  database
+  .catch((err) => {
+    console.error(err);
+    res.sendStatus(500);
+  });
+}
   };
   
   module.exports = {

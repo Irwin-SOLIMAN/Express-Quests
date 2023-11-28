@@ -1,34 +1,5 @@
 const database = require("../../database");
 
-// const movies = [
-//   {
-//     id: 1,
-//     title: "Citizen Kane",
-//     director: "Orson Wells",
-//     year: "1941",
-//     color: false,
-//     duration: 120,
-//   },
-//   {
-//     id: 2,
-//     title: "The Godfather",
-//     director: "Francis Ford Coppola",
-//     year: "1972",
-//     color: true,
-//     duration: 180,
-//   },
-//   {
-//     id: 3,
-//     title: "Pulp Fiction",
-//     director: "Quentin Tarantino",
-//     year: "1994",
-//     color: true,
-//     duration: 180,
-//   },
-// ];
-
-
-
 const getMovies = (req, res) => {
   database
   .query("select * from movies")
@@ -62,18 +33,36 @@ const getMovieById = (req, res) => {
 const postMovie = (req, res) => {
   const { title, director, year, color, duration } = req.body;
 
+  if(title && director && year && color && duration) {
   database
     .query(
       "INSERT INTO movies(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
       [title, director, year, color, duration]
     )
     .then(([result]) => {
-      res.status(201).send({ id: result.insertId });
+
+      const newMovies = {
+        id: result.insertId,
+        title,
+        director,
+        year,
+        color,
+        duration,
+      }
+
+      res.status(201).send(newMovies);
+     
     })
+
+  }
+  else {
+    database
     .catch((err) => {
       console.error(err);
-      res.sendStatus(500);
+      res.status(500).send("Internal Error");
     });
+  }
+
 };
 
 
