@@ -70,6 +70,7 @@ if (firstname && lastname && email && city && language) {
     const id = parseInt(req.params.id);
     const { firstname, lastname, email, city, language } = req.body;
   
+    if (firstname && lastname && email && city && language) {
     database
       .query(
         "update users set firstname = ?, lastname = ?, email = ?, city = ?, language = ? where id = ?",
@@ -82,10 +83,13 @@ if (firstname && lastname && email && city && language) {
           res.sendStatus(204);
         }
       })
+    } else {
+
+    database
       .catch((err) => {
         console.error(err);
         res.sendStatus(500);
-      });
+      });}
   };
   
 

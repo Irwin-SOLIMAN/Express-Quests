@@ -69,7 +69,7 @@ const postMovie = (req, res) => {
 const updateMovie = (req, res) => {
   const id = parseInt(req.params.id);
   const { title, director, year, color, duration } = req.body;
-
+  if(title && director && year && color && duration) {
   database
     .query(
       "update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
@@ -82,10 +82,15 @@ const updateMovie = (req, res) => {
         res.sendStatus(204);
       }
     })
+  }
+  else {
+    database
+  
     .catch((err) => {
       console.error(err);
       res.sendStatus(500);
     });
+  }
 };
 
 
