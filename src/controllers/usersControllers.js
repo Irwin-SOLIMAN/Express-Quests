@@ -1,9 +1,32 @@
 const database = require("../../database");
 
+// si un paramètre language est fourni dans l'URL (?language=English), ne renvoie que les locuteurs de cette langue.
+// si un paramètre city est fourni dans l'URL (?city=Paris), ne renvoie que les utilisateurs dont la ville correspond au paramètre
+
+
 
 const getUsers = (req, res) => {
+
+  let sql = "select * from users"
+  const sqlValues = []
+
+  if(req.query.city != null && req.query.language != null) {
+    sql += " WHERE city = ? AND language = ?"
+    sqlValues.push(req.query.city) // Paris
+    sqlValues.push(req.query.language) // French
+  }
+    else if (req.query.language != null) {
+      sql += " where language = ?"
+      sqlValues.push(req.query.language)
+    }
+    else if (req.query.city != null) {
+      sql += " where city = ?"
+      sqlValues.push(req.query.city)
+    }
+
+
     database
-    .query("select * from users")
+    .query(sql, sqlValues)
     .then(([users]) => {
       res.json(users); // use res.json instead of console.log
     })
